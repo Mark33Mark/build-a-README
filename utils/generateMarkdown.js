@@ -1,86 +1,140 @@
 
-// // Returns a license badge based on which license is passed in
-// // If there is no license, return an empty string.
-// renderLicenseBadge = license => {
 
-// }
 
-// // Returns the license link.
-// // If there is no license, return an empty string.
-// renderLicenseLink = license => {
-
-// }
-
-// // Returns the license section of README
-// // If there is no license, return an empty string.
-// renderLicenseSection = license => {
-
-// }
-
-// // Generate markdown for README
 generateMarkdown = ( data )  => {
-
-let draftMarkdown =
-
-`# ${data.title}
-
-![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/${data.username}/${data.repo}?style=flat&logo=appveyor) 
-![Badge for GitHub last commit](https://img.shields.io/github/last-commit/${data.username}/${data.repo}?style=flat&logo=appveyor)
   
-`
-  
-  // Generate Table of Contents conditionally based on data ( i.e. userResponse data from index.js)
-  let tableOfContents = `### Table of Contents`;
-    (data.description !== '')? tableOfContents += `\n1. [Project Description](#1-description)` :  console.error( "No Project Description provided." );
-    tableOfContents += `\n6. [License](#6-license)`
+let buildMarkDownFile = "";
 
-  // Add Table of Contents to markdown
-  draftMarkdown += tableOfContents;
+if( data.header !== "Not needed." ) {
 
-  // Add Project Description
-  draftMarkdown += `
-  
-  ---
-  ### 1. Description 
+  buildMarkDownFile = `![Mark Watson](./banners/PNG_${data.header}.png)
+# ${data.title}`;
+
+} else {
+
+buildMarkDownFile = `\n# ${data.title}`;
+
+}
+
+let usersGitHub = `${data.username}/${data.repo}?style=plastic&logo=github`;
+
+if ( data.license !== "No thanks." ) {
+buildMarkDownFile +=`\n
+[![Licence attached to repository](https://img.shields.io/github/license/${usersGitHub})](LICENSE.md)`;
+}
+
+if (data.username) {
+buildMarkDownFile += `
+![GitHub top language](https://img.shields.io/github/languages/top/${usersGitHub})  ![GitHub language count](https://img.shields.io/github/languages/count${usersGitHub})
+![GitHub last commit](https://img.shields.io/github/last-commit/${usersGitHub})  ![GitHub commits in last month on main branch](https://img.shields.io/github/commit-activity/m/${usersGitHub})
+
+`;
+}
+
+// == Table of Contents ====
+let tableOfContents = `### Table of Contents
+  1. [Project Description](#1-description)
+  2.
+  3.
+  4.
+  5.
+  6. [License](#6-license)`;
+
+// Add Table of Contents to markdown
+buildMarkDownFile += tableOfContents;
+
+// == Project Description =====
+buildMarkDownFile += `
+
+---
+### 1. Description 
 ${data.description}
   
 ---
-`
+`;
 
-  // Installation section
-  if (data.installation !== "") {
-  
-    draftMarkdown += `### 3. Installation
-The steps required to install project and how to get the development environment running:
+// == Installation section ====
+if (data.installation !== "") {
+
+buildMarkDownFile += `### 2. Installation
+The steps required to install the project and how to get the development environment running:
 * ${data.installation}
 
 ---
-`} else {
+`;
+} else {
 
-draftMarkdown += `### 3. Installation
+buildMarkDownFile += `### 2. Installation
 The steps required to install project and how to get the development environment running:
 * There are no installation instructions provided for this project.
 
 ---
-`}
+`;}
 
-// License section is required
-draftMarkdown +=`### 6. License
-The works in this repository are subject to:  
-* ${data.license}
+// == Usage =====
+buildMarkDownFile += `### 3. Description 
+${data.usage}
 
 ---
 `;
 
-  // Questions / About Developer section
-  let draftDev = 
-  `
-  
-  ### Questions?  `
+// == Credits =====
+buildMarkDownFile += `### 4. Credits 
+${data.credits}
 
-  draftMarkdown += draftDev;
-  return draftMarkdown;  
+---
+`;
+
+// == License ==== 
+if ( data.license === "No thanks." ) {
+
+buildMarkDownFile += `### 5. License
+There is no license used for this project.
+
+---
+`;
+
+} else {
+
+buildMarkDownFile += `### 5. License
+This project is licensed under the terms of the:  
+* ${data.license}
+
+---
+`;
+}
+
+// == Questions ====
+
+buildMarkDownFile += `### Questions / Contact Me 
+I hope you enjoy the application.  If you have questions or want to connect then please do so by
+
+`
+
+return buildMarkDownFile;  
+
 };
 
-// exports the variables and functions above for other modules to use them.
 module.exports = generateMarkdown;
+
+
+// Decided not to use this starter code.  Instead I've passed the
+// user repsonse as 
+
+// Returns a license badge based on which license is passed in
+// If there is no license, return an empty string.
+// renderLicenseBadge = license => {
+
+// }
+
+// Returns the license link.
+// If there is no license, return an empty string.
+// renderLicenseLink = license => {
+
+// }
+
+// Returns the license section of README
+// If there is no license, return an empty string.
+// renderLicenseSection = license => {
+
+// }
