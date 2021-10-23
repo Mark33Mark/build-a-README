@@ -1,6 +1,4 @@
 
-
-
 generateMarkdown = ( data )  => {
   
 let buildMarkDownFile = "";
@@ -16,16 +14,19 @@ buildMarkDownFile = `\n# ${data.title}`;
 
 }
 
+// variable created for badges to have a GitHub logo as the badges are GitHub specific.
 let usersGitHub = `${data.username}/${data.repo}?style=plastic&logo=github`;
 
 if ( data.license !== "No thanks." ) {
+
+  // no GitHub logo for the license.
 buildMarkDownFile +=`\n
-[![Licence attached to repository](https://img.shields.io/github/license/${usersGitHub})](LICENSE.md)`;
+[![Licence attached to repository](https://img.shields.io/github/license/${data.username}](LICENSE.md)`;  
 }
 
 if (data.username) {
 buildMarkDownFile += `
-![GitHub top language](https://img.shields.io/github/languages/top/${usersGitHub})  ![GitHub language count](https://img.shields.io/github/languages/count${usersGitHub})
+![GitHub top language](https://img.shields.io/github/languages/top/${usersGitHub})  ![GitHub language count](https://img.shields.io/github/languages/count/${usersGitHub})
 ![GitHub last commit](https://img.shields.io/github/last-commit/${usersGitHub})  ![GitHub commits in last month on main branch](https://img.shields.io/github/commit-activity/m/${usersGitHub})
 
 `;
@@ -34,11 +35,13 @@ buildMarkDownFile += `
 // == Table of Contents ====
 let tableOfContents = `### Table of Contents
   1. [Project Description](#1-description)
-  2.
-  3.
-  4.
-  5.
-  6. [License](#6-license)`;
+  2. [Installation](#2-installation)
+  3. [Usage](#3-usage)
+  4. [Credits](#4-credits)
+  5. [License](#5-license)
+  6. [How to contribute](#6-how-to-contribute)
+  7. [Tests](#7-tests)
+  8. [Questions](#8-how-to-contact-me)`;
 
 // Add Table of Contents to markdown
 buildMarkDownFile += tableOfContents;
@@ -72,7 +75,7 @@ The steps required to install project and how to get the development environment
 `;}
 
 // == Usage =====
-buildMarkDownFile += `### 3. Description 
+buildMarkDownFile += `### 3. Usage 
 ${data.usage}
 
 ---
@@ -104,11 +107,51 @@ This project is licensed under the terms of the:
 `;
 }
 
+// == Contribute =====
+if(data.contribute === false){
+  buildMarkDownFile += `### 6. How to Contribute
+
+Contributions to this project are currently not allowed.
+
+---
+`;
+
+} else if (data.contribute === true && data.contribute_covenant === true) {
+
+buildMarkDownFile += `### 6. How to Contribute 
+Contributions to this project are welcomed.
+
+Guidelines for contributing are available from: [Contributor Covenant](https://www.contributor-covenant.org/)
+
+Please do not contribute unless you are familiar with the guidelines. 
+
+---
+`;
+} else {
+
+buildMarkDownFile += `### 6. How to Contribute
+${data.contribute_custom_guideline}
+
+---
+`;
+}
+
+// == Tests =====
+buildMarkDownFile += `### 7. Tests 
+${data.tests}
+
+---
+`;
+
 // == Questions ====
+buildMarkDownFile += `### 8. How to Contact Me 
+I hope you enjoy the application.  If you have any questions or would like to connect, please do so by email:
 
-buildMarkDownFile += `### Questions / Contact Me 
-I hope you enjoy the application.  If you have questions or want to connect then please do so by
+${data.email}
 
+or follow me at my GitHub:
+
+[${data.username}'s GitHub](https://github.com/${data.username})
 `
 
 return buildMarkDownFile;  

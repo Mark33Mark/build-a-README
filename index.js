@@ -16,6 +16,7 @@ CONSOLE COLOR CODES
 
 // packages "required" for this application
 const inquirer = require("inquirer");
+const inquirerFileTreeSelection = require('inquirer-file-tree-selection-prompt')
 const fs = require("fs");
 
 // Internal module
@@ -68,16 +69,28 @@ const questions = [
         default: "<PLACEHOLDER> Instructions and examples for how to use your application.",
     },
     {
-        message: "\nQ5 of 12.\n   Details for how to contribute to your project?",
-        name: "contributing",
-        default: "<PLACEHOLDER> Detail how others can contribute to your application or package.",
+        type: "confirm",
+        message: "\nQ5 of 12.\n   Do you want to allow others to contribute to your project?",
+        name: "contribute",
+    },
+        {
+        type: "confirm",
+        message: "\nQ5 cont.\n   Are you using the Contributor Covenant as the guideline for users to contribute?",
+        name: "contribute_covenant",
+        when: ( answers ) => answers.contribute === true,
+    },
+    {
+        name: "contribute_custom_guideline",
+        message: "\nQ5 cont.\n   Please provide link or particulars for others to contribute to your project?",
+        default: "<PLACEHOLDER> How others can contribute to your application or package.",
+        when: ( answers ) => answers.contribute_covenant === false,
     },
     {
         message: "\nQ6 of 12.\n   References or credits?",
         name: "credits",
         default: "\n\t<PLACEHOLDER>\n\tIf crediting collaborators, include links to their GitHub profiles.\n\t" +
-                "For 3rd party assets, include links to their primary web presence\n\t" +
-                "For tutorials followed, provide their URL's.",
+                "For 3rd party assets, include links to their primary web presence.\n\t" +
+                "For tutorials followed, provide the URL's for the tutorial.",
     },
     {
         message: "\nQ7 of 12.\n   Tests completed for the app?",
@@ -148,9 +161,10 @@ const questions = [
 
 // Create the README.md file
 writeToFile = ( fileName, data ) => {
+
     fs.writeFile( fileName, data, err => {
         if (err) { 
-            return console.log(err); 
+            return console.err(err); 
         } else {
         console.log("\nSuccess!\nI've built you a README.md file.\n\n");
         }
