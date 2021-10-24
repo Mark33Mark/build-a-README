@@ -1,7 +1,7 @@
 {
   "name": "static-site",
   "version": "1.0.0",
-  "description": "",
+  "description": "![Mark Watson](./img/JPG_banner_build-a-README.jpg)\r # USYD-FSF Week9 Project\r ## Node.js: Professional README Generator",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +11,18 @@
   "dependencies": {
     "inquirer": "^6.5.2",
     "inquirer-file-tree-selection-prompt": "^1.0.12"
-  }
+  },
+  "directories": {
+    "doc": "doc"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mark33Mark/build-a-README.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Mark33Mark/build-a-README/issues"
+  },
+  "homepage": "https://github.com/Mark33Mark/build-a-README#readme"
 }

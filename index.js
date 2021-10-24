@@ -1,4 +1,16 @@
 
+/*=======================================================================
+ *
+ *   Javascript 
+ *        - this file creates the user interface and passes the user 
+ *          response from the various inquirer prompts.
+ * 
+ *   File created: 20 October 2021
+ *   Created by:   Mark Watson
+ *
+ *=======================================================================*/ 
+
+
 /*
 CONSOLE COLOR CODES
         FOREGROUND                          BACKGROUND                          GENERAL
@@ -12,12 +24,12 @@ CONSOLE COLOR CODES
         FgWhite     = "\x1b[37m"            BgWhite     = "\x1b[47m"
 */
 
-
-
 // packages "required" for this application
 const inquirer = require("inquirer");
-const inquirerFileTreeSelection = require('inquirer-file-tree-selection-prompt')
 const fs = require("fs");
+
+// Change this to the name of the directory where you would like your new file saved.
+const newDirectoryName = "./your_new_README/";
 
 // Internal module
 const generateMarkdown = require("./utils/generateMarkdown.js");
@@ -38,7 +50,7 @@ const questions = [
     {
         message: "\nQ1 of 12.\n   Title of your project?",
         name: "title",
-        default: "<PLACEHOLDER> Project Title",
+        default: "Project Title",
         validate: function (answer) {
             if (answer.length < 1) {
                 return console.log("A valid project title is required.");
@@ -153,7 +165,7 @@ const questions = [
         choices: [
         new inquirer.Separator("\n\x1b[42m\x1b[37m\x1b[1m = No thanks ===========  \x1b[0m"),"Not needed.",
         new inquirer.Separator("\n\x1b[42m\x1b[37m\x1b[1m = Geometric============  \x1b[0m"),"blue-geometric", "orange-geometric", "green-geometric", "purple-geometric", "red-geometric", "yellow-geometric", 
-        new inquirer.Separator("\n\x1b[42m\x1b[37m\x1b[1m = Nature ==============  \x1b[0m"), "lake-tide", "ocean-tide", 
+        new inquirer.Separator("\n\x1b[42m\x1b[37m\x1b[1m = Nature ==============  \x1b[0m"), "lake-tide", "ocean-tide", "calm-ocean", 
         new inquirer.Separator("\n\x1b[42m\x1b[37m\x1b[1m = Coding ==============  \x1b[0m"), "matrix", "code-focused",
         ],
     }
@@ -162,27 +174,35 @@ const questions = [
 // Create the README.md file
 writeToFile = ( fileName, data ) => {
 
-    fs.writeFile( fileName, data, err => {
+    fs.mkdir( newDirectoryName, { recursive: true }, ( err ) => {
+        if ( err ) throw err;
+      }); 
+
+    fs.writeFile( newDirectoryName + fileName, data, err => {
         if (err) { 
             return console.err(err); 
         } else {
-        console.log("\nSuccess!\nI've built you a README.md file.\n\n");
+        console.log(`\nSuccess!\nI've built you a README.md file.\n\nYou will find it saved at: ${ newDirectoryName + fileName}\n`);
         }
     });
 };
 
-// Commences asking the inquirer prompts following the user's command line: node index.js in the command line.
+// Commences asking the inquirer prompts following the user typing in the command line of their selected terminal: node index.js 
 init = () => {
 
 console.clear(); 
 console.log(banner);
 
     inquirer
+
+        // I accept there are better to do this than an inquirer within an inquirer.  I could have created a separate function to handle the no response.
+        // For the moment the below is so that if a user decides to exit they don't need to step through the 12 questions.  Future improvement would
+        // move the no response (false) to an exit application function.
         .prompt([
             {
                 name: "wants_to_start",
                 type: "confirm",
-                message: "Welcome, I can build a README file for you.\n  For me to do this I need you to answer some questions, keep going?",
+                message: "Welcome, I can build a README file for you.\n  For me to do this I need you to answer 12 questions, keep going?",
             },
             ])
         .then((answers) => {
@@ -195,11 +215,11 @@ console.log(banner);
                     .prompt(questions)
                     .then((userResponse) => {
 
-                        console.info("Your answers: ", userResponse);
+                        console.info( "Your answers: ", userResponse );
 
                         const createFile = generateMarkdown( userResponse );
 
-                        writeToFile( "your_README.md", createFile );
+                        writeToFile( "README.md", createFile );
                         console.clear(); 
                         console.log(banner);
 
@@ -207,7 +227,8 @@ console.log(banner);
 
                 } else { 
                     // thought this would be a fun / colourful play but instead now realise everyone's different 
-                    // terminal choices and the prescribed colours not working how it does in my setup.
+                    // terminal software choice and the prescribed colours do not work in the other terminal's I
+                    // I tested it in.
                     console.clear(); 
                     console.log(`\n
 \x1b[36m▁ \x1b[31m▂ \x1b[32m▄ \x1b[33m▅ \x1b[34m▆ \x1b[35m▇ \x1b[36m█ \x1b[37mSorry \x1b[36m█ \x1b[35m▇ \x1b[34m▆ \x1b[33m▅ \x1b[32m▄ \x1b[31m▂ \x1b[36m▁\x1b[37m

@@ -1,0 +1,20 @@
+{
+  "name": "getting-started-with-jest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "watch": "jest --watch .js"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["html"]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
+}
