@@ -1,3 +1,16 @@
+/*=======================================================================
+ *
+ *   Javascript 
+ *        - builds up the README file based on the user answers passed into
+ *          this script.
+ *        - This file would benefit from modulisation as the script
+ *          is managing too much in one function.
+ * 
+ *   File created: 20 October 2021
+ *   Created by:   Mark Watson
+ *
+ *=======================================================================*/ 
+
 
 generateMarkdown = ( data )  => {
   
@@ -5,7 +18,7 @@ let buildMarkDownFile = "";
 
 if( data.header !== "Not needed." ) {
 
-  buildMarkDownFile = `![Mark Watson](./banners/PNG_${data.header}.png)
+  buildMarkDownFile = `![Mark Watson](../banners/PNG_${data.header}.png)
 # ${data.title}`;
 
 } else {
@@ -21,7 +34,7 @@ if ( data.license !== "No thanks." ) {
 
   // no GitHub logo for the license.
 buildMarkDownFile +=`\n
-[![Licence attached to repository](https://img.shields.io/github/license/${data.username}](LICENSE.md)`;  
+[![Licence attached to repository](https://img.shields.io/github/license/${data.username}/${data.repo}?style=plastic)](LICENSE.md)`;  
 }
 
 if (data.username) {
@@ -143,6 +156,11 @@ ${data.tests}
 ---
 `;
 
+
+// markdown needs a hyphen and all lower case for it's syntax to work as a link.
+let titleString = data.title;
+titleString = titleString.toLowerCase().replace(/\s/g, "-");
+
 // == Questions ====
 buildMarkDownFile += `### 8. How to Contact Me 
 I hope you enjoy the application.  If you have any questions or would like to connect, please do so by email:
@@ -152,6 +170,10 @@ ${data.email}
 or follow me at my GitHub:
 
 [${data.username}'s GitHub](https://github.com/${data.username})
+
+---
+
+- [Back to the top](#${titleString})
 `
 
 return buildMarkDownFile;  
@@ -161,9 +183,9 @@ return buildMarkDownFile;
 module.exports = generateMarkdown;
 
 
-// Decided not to use this starter code.  Instead I've passed the
-// user repsonse as 
-
+// I ended up not using the below starter code as I manage the license
+// amongst all the other README items inside the above script.
+//
 // Returns a license badge based on which license is passed in
 // If there is no license, return an empty string.
 // renderLicenseBadge = license => {
